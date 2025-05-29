@@ -1,0 +1,118 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pengumuman Kelulusan - MTs AL ISLAM NGLESES</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { font-family: 'Poppins', sans-serif; }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-green-200 to-green-50 min-h-screen">
+
+  <header class="bg-gradient-to-r from-blue-500 to-blue-700 text-white fixed top-0 w-full z-10 shadow-md p-4 flex items-center gap-4">
+    <img src="assets/logo.png" alt="Logo" class="w-14 h-14 object-contain" />
+    <div>
+      <h1 class="text-xl font-bold">PENGUMUMAN KELULUSAN</h1>
+      <h2 class="text-sm">MTs AL ISLAM NGLESES</h2>
+      <p class="text-xs">Tahun Ajaran 2024/2025</p>
+    </div>
+  </header>
+
+  <main class="pt-32 p-4 text-center">
+    <div id="countdown-container" class="text-center mb-6">
+      <h2 class="text-xl font-semibold mb-2">Pengumuman akan dibuka pada:</h2>
+      <p class="text-lg font-bold text-red-600">2 Juni 2025 pukul 13.00 WIB</p>
+      <div id="countdown" class="text-2xl font-mono mt-4"></div>
+    </div>
+
+    <div id="announcement-msg" class="hidden text-green-600 font-bold text-xl mb-4">Pengumuman Sudah Dibuka!</div>
+    
+    <div id="check-form" class="hidden max-w-md mx-auto">
+      <input type="text" id="nisn-input" placeholder="Masukkan NISN" class="w-full border border-gray-400 p-2 rounded mb-4" />
+      <button onclick="checkResult()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Cek Hasil</button>
+    </div>
+
+    <div id="result-container" class="mt-6"></div>
+  </main>
+
+  <footer class="text-center text-sm text-gray-600 mt-10 mb-4">
+    &copy; 2025 MTs AL ISLAM NGLESES
+  </footer>
+
+  <script>
+    const targetTime = new Date("2025-06-02T06:00:00Z").getTime(); // WIB = UTC+7
+    const countdownContainer = document.getElementById("countdown-container");
+    const countdownEl = document.getElementById("countdown");
+    const checkForm = document.getElementById("check-form");
+    const resultContainer = document.getElementById("result-container");
+    const msg = document.getElementById("announcement-msg");
+
+    const students = {
+      "3103144887": { name: "ABI YAZID", result: "LULUS" },
+      "3100662194": { name: "AHMAD ARIFIN", result: "LULUS" },
+      "0108879250": { name: "AHMAD ZAKARIA KHOIRUL WAFFA", result: "TIDAK LULUS" },
+      "0091308964": { name: "ZAHRA BERLIANA PUTRI", result: "TIDAK LULUS" },
+      "3106396466": { name: "TEGUH DECO NUGROHO", result: "TIDAK LULUS" },
+      // Tambahkan semua data lainnya sesuai kebutuhan...
+    };
+
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const distance = targetTime - now;
+
+      if (distance <= 0) {
+        countdownContainer.style.display = "none";
+        checkForm.style.display = "block";
+        msg.classList.remove("hidden");
+        return;
+      }
+
+      const d = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const s = Math.floor((distance % (1000 * 60)) / 1000);
+
+      countdownEl.innerText = `${d} Hari ${h} Jam ${m} Menit ${s} Detik`;
+    }
+
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+
+    function checkResult() {
+      const nisn = document.getElementById("nisn-input").value.trim();
+      resultContainer.innerHTML = "";
+
+      if (!students[nisn]) {
+        resultContainer.innerHTML = `<p class="text-red-600 font-bold">NISN tidak ditemukan!</p>`;
+        return;
+      }
+
+      const { name, result } = students[nisn];
+      if (result === "LULUS") {
+        resultContainer.innerHTML = `
+          <div class="bg-green-200 border border-green-500 text-green-800 p-4 rounded shadow animate-pulse">
+            <h3 class="text-xl font-bold mb-2">SELAMAT!</h3>
+            <p>${name}</p>
+            <p class="mt-2">Anda dinyatakan <strong>LULUS</strong></p>
+          </div>
+        `;
+        // Tambah animasi kembang api di produksi nyata
+      } else {
+        resultContainer.innerHTML = `
+          <div class="bg-red-200 border border-red-500 text-red-800 p-4 rounded shadow animate-pulse">
+            <h3 class="text-xl font-bold mb-2">MOHON MAAF</h3>
+            <p>${name}</p>
+            <p class="mt-2">Anda dinyatakan <strong>TIDAK LULUS</strong></p>
+          </div>
+        `;
+        // Tambah animasi hujan di produksi nyata
+      }
+    }
+  </script>
+
+</body>
+</html>
